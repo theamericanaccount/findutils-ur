@@ -1,6 +1,6 @@
 # Maintainer: judd <jvinet@zeroflux.org>
 pkgname=findutils
-pkgver=4.4.0
+pkgver=4.4.1
 pkgrel=1
 pkgdesc="GNU utilities to locate files"
 arch=(i686 x86_64)
@@ -9,7 +9,8 @@ groups=('base')
 depends=('glibc>=2.8')
 url="http://www.gnu.org/software/findutils"
 source=(ftp://ftp.gnu.org/pub/gnu/findutils/findutils-$pkgver.tar.gz)
-md5sums=('49e769ac4382fae6f104f99d54d0a112')
+install=findutils.install
+md5sums=('5883f569dc021eee765f330bb7a3782d')
 
 build() {
   cd $startdir/src/$pkgname-$pkgver
@@ -26,4 +27,6 @@ build() {
   rm -f $startdir/pkg/usr/share/man/man1/{updatedb.1,locate.1}
   rm -f $startdir/pkg/usr/share/man/man5/locatedb.5
   rmdir $startdir/pkg/usr/var
+  rm -f $pkgdir/usr/share/info/dir
 }
+
