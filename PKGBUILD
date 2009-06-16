@@ -1,7 +1,7 @@
 # Maintainer: judd <jvinet@zeroflux.org>
 pkgname=findutils
-pkgver=4.4.1
-pkgrel=2
+pkgver=4.4.2
+pkgrel=1
 pkgdesc="GNU utilities to locate files"
 arch=(i686 x86_64)
 license=('GPL3')
@@ -10,7 +10,7 @@ depends=('glibc>=2.8')
 url="http://www.gnu.org/software/findutils"
 source=(ftp://ftp.gnu.org/pub/gnu/findutils/findutils-$pkgver.tar.gz)
 install=findutils.install
-md5sums=('5883f569dc021eee765f330bb7a3782d')
+md5sums=('351cc4adb07d54877fa15f75fb77d39f')
 
 build() {
   cd $startdir/src/$pkgname-$pkgver
@@ -29,4 +29,3 @@ build() {
   rmdir $startdir/pkg/usr/var
   rm -f $pkgdir/usr/share/info/dir
 }
-
