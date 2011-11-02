@@ -2,7 +2,7 @@
 
 pkgname=findutils
 pkgver=4.4.2
-pkgrel=3
+pkgrel=4
 pkgdesc="GNU utilities to locate files"
 arch=('i686' 'x86_64')
 license=('GPL3')
@@ -22,6 +22,11 @@ build() {
 
   ./configure --prefix=/usr
   make
+}
+
+check() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make check
 }
 
 package() {
