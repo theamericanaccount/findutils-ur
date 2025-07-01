@@ -9,7 +9,6 @@ pkgbase = findutils
 	makedepends = wget
 	makedepends = python
 	depends = glibc
-	depends = sh
 	source = git+https://git.savannah.gnu.org/git/findutils.git?signed#tag=v4.10.0
 	source = git+https://git.savannah.gnu.org/git/gnulib.git
 	validpgpkeys = A5189DB69C1164D33002936646502EF796917195

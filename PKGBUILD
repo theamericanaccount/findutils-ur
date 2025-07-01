@@ -6,7 +6,7 @@ pkgrel=2
 pkgdesc="GNU utilities to locate files"
 arch=('x86_64')
 license=('GPL-3.0-or-later')
-depends=('glibc' 'sh')
+depends=('glibc')
 makedepends=('git' 'wget' 'python')
 url='https://www.gnu.org/software/findutils/'
 source=("git+https://git.savannah.gnu.org/git/findutils.git?signed#tag=v${pkgver}"
