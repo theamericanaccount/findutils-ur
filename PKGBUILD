@@ -2,7 +2,7 @@
 
 pkgname=findutils
 pkgver=4.10.0
-pkgrel=2
+pkgrel=3
 pkgdesc="GNU utilities to locate files"
 arch=('x86_64')
 license=('GPL-3.0-or-later')
