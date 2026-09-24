@@ -127,7 +127,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=3
+pkgrel=4
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -183,7 +183,7 @@ if [[ "${_ns}" == "gnu" ]]; then
 fi
 if [[ "${_git_service}" == "gnu" ]]; then
   _url="${_http}/findutils.git"
-  _gnulib_url="${_http}/gnulib.git"
+  _gnulib_uri="${_http}/gnulib.git"
   _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
   _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
 elif [[ "${_git_service}" == "github" ]]; then
