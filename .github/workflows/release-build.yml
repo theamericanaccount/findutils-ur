@@ -2073,6 +2073,7 @@ jobs:
             mingw-w64-${{ matrix.env }}-gcc
             mingw-w64-${{ matrix.env }}-nodejs
             python-docutils
+            tree
             unzip
       - name:
           Upgrade MinGW64 environment.
@@ -2142,10 +2143,6 @@ jobs:
       - name:
           Installs Inteppacman.
         run: |
-          pacman \
-            -S \
-            --noconfirm \
-            "tree"
           fur \
             -v \
             -p \
