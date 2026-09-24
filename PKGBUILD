@@ -127,7 +127,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=10
+pkgrel=11
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -255,8 +255,12 @@ prepare() {
         "${srcdir}/${_gnulib_tarname}" \
         "${PWD}/gnulib"
     fi
+    sed \
+      -i
+      "/prepare_GNULIB_SRCDIR$/d" \
+      "${PWD}/bootstrap"
   fi
-  ./bootstrap
+  "${PWD}/bootstrap"
 }
 
 build() {
