@@ -268,6 +268,15 @@ jobs:
       #           -y \
       #           "rust" \
       #           "rust-std-armv7-linux-androideabi"
+      # Needs patches
+      # - name:
+      #     Installs Deno.
+      #   run: |
+      #     /entrypoint.sh \
+      #       npm \
+      #         install \
+      #           -g \
+      #           "deno"
       - name:
           Installs Git.
         run: |
@@ -714,8 +723,6 @@ jobs:
               --overwrite="*" \
               "wget" || \
             true
-      - uses:
-          actions/checkout@v4.2.2
       - name:
           Installs EVM Chains Info.
         run: |
@@ -756,6 +763,10 @@ jobs:
               -p \
                 "pacman" \
               "evm-chains-explorers"
+      - uses:
+          actions/setup-node@v5
+      - uses:
+          actions/checkout@v7.0.1
       # - name:
       #     Installs LibEVM.
       #   run: |
@@ -1216,7 +1227,7 @@ jobs:
         id:
           version
       - name:
-          Upload Termux package.
+          Upload the Android package.
         uses:
           actions/upload-release-asset@v1
         env:
@@ -1513,6 +1524,9 @@ jobs:
             "${HOME}/fur"
       - name:
           Installs EVM Chains Info.
+        env:
+          GH_TOKEN:
+            ${{ secrets.GITHUB_TOKEN }}
         run: |
           fur \
             -v \
