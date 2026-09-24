@@ -2064,9 +2064,9 @@ jobs:
           install:
             base-devel
             dos2unix
-            mingw-w64-${{ matrix.env }}-github-cli
+            mingw-w64-ucrt-${{ matrix.env }}-github-cli
             git
-            mingw-w64-${{ matrix.env }}-jq
+            mingw-w64-ucrt-${{ matrix.env }}-jq
             mingw-w64-${{ matrix.env }}-gcc
             mingw-w64-${{ matrix.env }}-nodejs
             python-docutils
