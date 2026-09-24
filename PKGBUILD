@@ -64,6 +64,10 @@ else
   _libcompiler="gcc-libs"
   _sh="sh"
 fi
+if [[ ! -v "_ns" ]]; then
+  _ns="themartiancompany"
+  _ns="gnu"
+fi
 if [[ ! -v "_git" ]]; then
   _git="true"
 fi
@@ -73,10 +77,6 @@ if [[ ! -v "_git_service" ]]; then
   elif [[ "${_ns}" == "themartiancompany" ]]; then
     _git_service="github"
   fi
-fi
-if [[ ! -v "_ns" ]]; then
-  _ns="themartiancompany"
-  _ns="gnu"
 fi
 if [[ ! -v "_tag_name" ]]; then
   if [[ "${_ns}" == "gnu" ]]; then
