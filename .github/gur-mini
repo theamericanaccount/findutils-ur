@@ -89,6 +89,17 @@ _gur_mini() {
       return \
         1
     fi
+    _gh="$(
+      command \
+        -v \
+        gh)"
+    if [[ "${_os}" == "Msys2" ]]; then
+      if [[ ! -e "${_gh}" ]]; then
+        if [[ -e "/ucrt64/bin/gh" ]]; then
+          _gh="/ucrt64/bin/gh"
+        fi
+      fi
+    fi
     gh \
       "${_gh_opts[@]}" \
       release \
