@@ -235,7 +235,8 @@ fi
 
 prepare() {
   local \
-    _bootstrap_opts=()
+    _bootstrap_opts=() \
+    _os
   cd \
     "${_tarname}"
   if [[ "${_git}" == "true" ]]; then
@@ -274,6 +275,15 @@ prepare() {
       --no-git
       # --gnulib-srcdir="${srcdir}/${_gnulib_tarname}"
     )
+  fi
+  _os="$(
+    uname \
+      -o)"
+  if [[ "${_os}" == "Android" ]]; then
+    sed \
+      "s%#! /bin/sh%#!/usr/bin/env bash%g" \
+      -i \
+      "${PWD}/bootstrap"
   fi
   export \
     GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"; \
