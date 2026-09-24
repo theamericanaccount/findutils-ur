@@ -1260,6 +1260,8 @@ jobs:
         archlinux:base-devel
       volumes: 
         - /tmp/node20:/__e/node20
+      volumes: 
+        - /tmp/node24:/__e/node24
     # approximate environment variables for actions
     # that can't be forced to use entrypoint.sh
     env:
@@ -1863,6 +1865,7 @@ jobs:
           _git="false" \
           _git_service="github" \
           recipe-get \
+            -v \
             -o \
               "array" \
             -d \

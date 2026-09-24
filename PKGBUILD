@@ -76,12 +76,15 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-if [[ ! -v "_ns" ]]; then
-  _ns="themartiancompany"
-  _ns="gnu"
-fi
 if [[ ! -v "_git" ]]; then
   _git="true"
+fi
+if [[ ! -v "_ns" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    _ns="gnu"
+  elif [[ "${_git}" == "false" ]]; then
+    _ns="themartiancompany"
+  fi
 fi
 if [[ ! -v "_git_service" ]]; then
   if [[ "${_ns}" == "gnu" ]]; then
@@ -122,6 +125,7 @@ pkgname=(
   "${_pkg}"
 )
 pkgver=4.11.0
+_commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 pkgrel=3
 _pkgdesc=(
   "GNU utilities to locate files"
