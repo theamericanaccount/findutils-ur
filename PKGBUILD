@@ -117,6 +117,9 @@ if [[ ! -v "_archive_format" ]]; then
     fi
   fi
 fi
+if [[ ! -v "_docs" ]]; then
+  _docs="true"
+fi
 _py="python"
 _proj=gnu
 _pkg=findutils
@@ -127,7 +130,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=17
+pkgrel=18
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -155,6 +158,11 @@ makedepends=(
   "${_py}"
   "wget"
 )
+if [[ "${_docs}" == "true" ]]; then
+  makedepends+=(
+    "texinfo"
+  )
+fi
 # if [[ "${_os}" == "Android" ]]; then
 #   makedepends+=(
 #     "termux-fix-shebang"
@@ -318,10 +326,12 @@ build() {
   ./configure \
     "${_configure_opts[@]}"
   # don't build locate, but the docs want a file in there.
-  make \
-    -C \
-      "locate" \
-    dblocation.texi
+  if [[ "${_docs}" == "true" ]]; then
+    make \
+      -C \
+        "locate" \
+      dblocation.texi
+  fi
   make
 }
 
