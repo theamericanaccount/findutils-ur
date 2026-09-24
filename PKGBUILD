@@ -84,6 +84,15 @@ if [[ ! -v "_ns" ]]; then
     _ns="gnu"
   elif [[ "${_git}" == "false" ]]; then
     _ns="themartiancompany"
+    if [[ "${_os}" == "Msys" ]]; then
+      _ns="gnu"
+    fi
+  fi
+fi
+if [[ ! -v "_release" ]]; then
+  _release="false"
+  if [[ "${_os}" == "Msys" ]]; then
+    _release="true"
   fi
 fi
 if [[ ! -v "_git_service" ]]; then
@@ -92,6 +101,9 @@ if [[ ! -v "_git_service" ]]; then
   elif [[ "${_ns}" == "themartiancompany" ]]; then
     _git_service="github"
   fi
+fi
+if [[ "${_os}" == "Msys" ]]; then
+  _git_service="gnu"
 fi
 if [[ ! -v "_tag_name" ]]; then
   if [[ "${_ns}" == "gnu" ]]; then
@@ -113,7 +125,11 @@ if [[ ! -v "_archive_format" ]]; then
     elif [[ "${_git_service}" == "gitlab" ]]; then
       _archive_format="tar.gz"
     elif [[ "${_git_service}" == "gnu" ]]; then
-      _archive_format="tar.gz"
+      if [[ "${_release}" == "true" ]]; then
+        _archive_format="tar.xz"
+      elif [[ "${_release}" == "false" ]]; then
+        _archive_format="tar.gz"
+      fi
     fi
   fi
 fi
@@ -130,7 +146,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=31
+pkgrel=33
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -187,6 +203,7 @@ fi
 _tarname="${_pkg}-${_tag}"
 _github_sum="0aa6183ad71351039711e302646dfc46b5f7f8930414c88ddca9cb1319e41c4c"
 _gnulib_github_sum="81f7839181261a17785d4d05a1b45d1e7e23c932ff093cb1100a8cbdf95b680c"
+_gnu_release_sum='bfd19cb06cc71f3352d567e90284d8cdac02ac89774bbeadf0b533b0c11432fd'
 if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
   _gnulib_tarname="gnulib"
@@ -200,17 +217,29 @@ elif [[ "${_git}" == "false" ]]; then
       _sum="${_github_sum}"
       _gnulib_sum="${_gnulib_github_sum}"
     fi
+  elif [[ "${_ns}" == "gnu" ]]; then
+    if [[ "${_release}" == "true" ]]; then
+      _sum="${_gnu_release_sum}"
+    fi
   fi
 fi
 url="https://www.${_proj}.org/software/${_pkg}"
 if [[ "${_ns}" == "gnu" ]]; then
-  _http="https://git.savannah.gnu.org/git"
+  if [[ "${_git}" == "true" ]]; then
+    _http="https://git.savannah.${_ns}.org/git"
+  elif [[ "${_git}" == "true" ]]; then
+    _http="https://ftp.${_ns}.org/pub/${_ns}"
+  fi
 fi
 if [[ "${_git_service}" == "gnu" ]]; then
-  _url="${_http}/findutils.git"
-  _gnulib_uri="${_http}/gnulib.git"
-  _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
-  _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
+  if [[ "${_git}" == "true" ]]; then
+    _url="${_http}/${_pkg}.git"
+    _gnulib_uri="${_http}/gnulib.git"
+    _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
+    _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
+  elif [[ "${_git}" == "false" ]]; then
+    _url="${_http}/${_pkg}/${_tarname}.tar.xz"
+  fi
 elif [[ "${_git_service}" == "github" ]]; then
   _http="https://${_git_service}.com"
   _url="${_http}/${_ns}/${_pkg}"
@@ -227,7 +256,6 @@ elif [[ "${_git_service}" == "github" ]]; then
 fi
 source=(
   "${_src}"
-  "${_gnulib_src}"
 )
 validpgpkeys=(
   # Bernhard Voelker
@@ -245,6 +273,14 @@ if [[ "${_git}" == "true" ]]; then
 elif [[ "${_git}" == "false" ]]; then
   sha256sums=(
     "${_sum}"
+    "${_gnulib_sum}"
+  )
+fi
+if [[ "${_release}" == "false" ]]; then
+  source+=(
+    "${_gnulib_src}"
+  )
+  sha256sums=(
     "${_gnulib_sum}"
   )
 fi
@@ -282,46 +318,51 @@ prepare() {
       submodule \
         update
   elif [[ "${_git}" == "false" ]]; then
-    if [[ -e ".gitmodules" ]]; then
-      rm \
-        -v \
-        "${PWD}/.gitmodules"
+    if [[ "${_release}" == "false" ]]; then
+      if [[ -e ".gitmodules" ]]; then
+        rm \
+          -v \
+          "${PWD}/.gitmodules"
+      fi
+      # if [[ -d "gnulib" ]]; then
+      #   mv \
+      #     "${srcdir}/${_gnulib_tarname}/"* \
+      #     "gnulib"
+      # elif [[ ! -d "gnulib" ]]; then
+      #   mv \
+      #     "${srcdir}/${_gnulib_tarname}" \
+      #     "${PWD}/gnulib"
+      # fi
+      # sed \
+      #   -i
+      #   "/prepare_GNULIB_SRCDIR$/d" \
+      #   "${PWD}/bootstrap"
+      _bootstrap_opts+=(
+        --no-git
+        # --gnulib-srcdir="${srcdir}/${_gnulib_tarname}"
+      )
     fi
-    # if [[ -d "gnulib" ]]; then
-    #   mv \
-    #     "${srcdir}/${_gnulib_tarname}/"* \
-    #     "gnulib"
-    # elif [[ ! -d "gnulib" ]]; then
-    #   mv \
-    #     "${srcdir}/${_gnulib_tarname}" \
-    #     "${PWD}/gnulib"
-    # fi
-    # sed \
-    #   -i
-    #   "/prepare_GNULIB_SRCDIR$/d" \
-    #   "${PWD}/bootstrap"
-    _bootstrap_opts+=(
-      --no-git
-      # --gnulib-srcdir="${srcdir}/${_gnulib_tarname}"
-    )
+    _os="$(
+      uname \
+        -o)"
+    if [[ "${_os}" == "Android" ]]; then
+      _android_fix_shebang \
+        "${PWD}/bootstrap"
+      _android_fix_shebang \
+        "${srcdir}/${_gnulib_tarname}/gnulib-tool"
+      _android_fix_shebang \
+        "${srcdir}/${_gnulib_tarname}/gnulib-tool.py"
+      # termux-fix-shebang \
+      #   "/data/data/com.termux/files/usr/bin/fur"; \
+    fi
+    export \
+      GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"
+    "${PWD}/bootstrap" \
+      "${_bootstrap_opts[@]}"
+  elif [[ "${_release}" == "true" ]]; then
+    autoreconf \
+      -fi
   fi
-  _os="$(
-    uname \
-      -o)"
-  if [[ "${_os}" == "Android" ]]; then
-    _android_fix_shebang \
-      "${PWD}/bootstrap"
-    _android_fix_shebang \
-      "${srcdir}/${_gnulib_tarname}/gnulib-tool"
-    _android_fix_shebang \
-      "${srcdir}/${_gnulib_tarname}/gnulib-tool.py"
-    # termux-fix-shebang \
-    #   "/data/data/com.termux/files/usr/bin/fur"; \
-  fi
-  export \
-    GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"; \
-  "${PWD}/bootstrap" \
-    "${_bootstrap_opts[@]}"
 }
 
 build() {
@@ -332,6 +373,19 @@ build() {
   )
   cd \
     "${_tarname}"
+  if [[ "${_os}" == "Msys" ]]; then
+    if [[ "$CARCH" == "i686" ]]; then
+      _configure_opts+=(
+        --disable-year2038
+      )
+    fi
+    _configure_opts+=(
+      DEFAULT_ARG_SIZE="(32u*1024)"
+      --disable-year2038
+      --without-libiconv-prefix
+      --without-libintl-prefix
+    )
+  fi
   # Don't build or install locate because we use mlocate,
   # which is a secure version of locate.
   sed \
