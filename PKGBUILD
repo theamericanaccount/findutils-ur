@@ -257,23 +257,23 @@ prepare() {
         -v \
 	"${PWD}/.gitmodules"
     fi
-    # if [[ -d "gnulib" ]]; then
-    #   mv \
-    #     "${srcdir}/${_gnulib_tarname}/"* \
-    #     "gnulib"
-    # elif [[ ! -d "gnulib" ]]; then
-    #   mv \
-    #     "${srcdir}/${_gnulib_tarname}" \
-    #     "${PWD}/gnulib"
-    # fi
+    if [[ -d "gnulib" ]]; then
+      mv \
+        "${srcdir}/${_gnulib_tarname}/"* \
+        "gnulib"
+    elif [[ ! -d "gnulib" ]]; then
+      mv \
+        "${srcdir}/${_gnulib_tarname}" \
+        "${PWD}/gnulib"
+    fi
     # sed \
     #   -i
     #   "/prepare_GNULIB_SRCDIR$/d" \
     #   "${PWD}/bootstrap"
     _bootstrap_opts+=(
       --no-git
-      --gnulib-srcdir
-        "${srcdir}/${_gnulib_tarname}"
+      # --gnulib-srcdir
+      #   "${srcdir}/${_gnulib_tarname}"
     )
   fi
   "${PWD}/bootstrap" \
