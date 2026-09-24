@@ -127,7 +127,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=8
+pkgrel=9
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -241,6 +241,11 @@ prepare() {
       submodule \
         update
   elif [[ "${_git}" == "true" ]]; then
+    if [[ -e ".gitmodules" ]]; then
+      rm \
+        -v \
+	"${PWD}/.gitmodules"
+    fi
     if [[ -d "gnulib" ]]; then
       mv \
         "${srcdir}/${_gnulib_tarname}/"* \
