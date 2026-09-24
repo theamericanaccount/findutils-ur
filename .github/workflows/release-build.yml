@@ -2075,7 +2075,7 @@ jobs:
             python-docutils
             unzip
       - name:
-          Upgrade Arch environment.
+          Upgrade MinGW64 environment.
         run: |
           pacman \
             -Syu \
@@ -2083,10 +2083,13 @@ jobs:
       - name:
           Installs jq.
         run: |
-          fur \
-            -v \
-            -d \
-            "jq"
+          git \
+            clone \
+              --branch="jq" \
+              --single-branch \
+              --depth=1 \
+              "https://github.com/themartiancompany/fur" \
+              "${HOME}/fur"
           rm \
             "${HOME}/fur/mingw64/x86_64/"*".pkg.tar."*".sig"
           tree \
