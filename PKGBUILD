@@ -96,7 +96,7 @@ fi
 if [[ ! -v "_tag_name" ]]; then
   if [[ "${_ns}" == "gnu" ]]; then
     _tag_name="tag"
-  elif [[ "${_ns}" == "themartiacompany" ]]; then
+  elif [[ "${_ns}" == "themartiancompany" ]]; then
     _tag_name="commit"
   fi
 fi
@@ -126,6 +126,7 @@ pkgname=(
 )
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
+_gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
 pkgrel=3
 _pkgdesc=(
   "GNU utilities to locate files"
@@ -154,30 +155,51 @@ if [[ ! -v "_tag" ]]; then
   if [[ "${_tag_name}" == "tag" ]]; then
     _tag="v${pkgver}"
   elif [[ "${_tag_name}" == "commit" ]]; then
-    _commit="${_commit}"
+    _tag="${_commit}"
+    _gnulib_tag="${_gnulib_commit}"
   fi
 fi
 _tarname="${_pkg}-${_tag}"
+_github_sum="0aa6183ad71351039711e302646dfc46b5f7f8930414c88ddca9cb1319e41c4c"
+_gnulib_github_sum="81f7839181261a17785d4d05a1b45d1e7e23c932ff093cb1100a8cbdf95b680c"
 if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
-  _tarname_gnulib="gnulib"
-  _tarfile_gnulib="${_tarname_gnulib}"
+  _gnulib_tarname="gnulib"
+  _gnulib_tarfile="${_gnulib_tarname}"
 elif [[ "${_git}" == "false" ]]; then
   _tarfile="${_tarname}.${_archive_format}"
-  _tarname_gnulib="gnulib"
-  _tarfile_gnulib="${_tarname_gnulib}.${_archive_format}"
+  _gnulib_tarname="gnulib-${_gnulib_tag}"
+  _gnulib_tarfile="${_gnulib_tarname}.${_archive_format}"
+  if [[ "${_ns}" == "themartiancompany" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _sum="${_github_sum}"
+      _gnulib_sum="${_gnulib_github_sum}"
+    fi
+  fi
 fi
 url="https://www.${_proj}.org/software/${_pkg}"
-_url=
 if [[ "${_ns}" == "gnu" ]]; then
   _http="https://git.savannah.gnu.org/git"
 fi
 if [[ "${_git_service}" == "gnu" ]]; then
   _url="${_http}/findutils.git"
   _gnulib_url="${_http}/gnulib.git"
+  _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
+  _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
+elif [[ "${_git_service}" == "github" ]]; then
+  _http="https://${_git_service}.com"
+  _url="${_http}/${_ns}/${_pkg}"
+  _gnulib_url="${_http}/${_ns}/gnulib"
+  if [[ "${_git_service}" == "github" ]]; then
+    if [[ "${_tag_name}" == "commit" ]]; then
+      _uri="${_url}/archive/${_commit}.${_archive_format}"
+      _gnulib_uri="${_gnulib_url}/archive/${_gnulib_commit}.${_archive_format}"
+      _sum="${_github_sum}"
+    fi
+  fi
+  _src="${_tarfile}::${_uri}"
+  _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
 fi
-_src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
-_gnulib_src="${_tarfile_gnulib}::git+${_gnulib_url}"
 source=(
   "${_src}"
   "${_gnulib_src}"
@@ -190,10 +212,17 @@ validpgpkeys=(
   #   <james@youngman.org>
   '0CF4E8D871593224842832B888DD9E08C5DDACB9'
 )
-b2sums=(
-  '234e55a7eb5d9b882e45f9fb40446f765741130e4c3ebd01154344e48f0d3bcb6b36442d1c99c3574df239511959d542ec9b201fe269a1fd7b527edd058c54d5'
-  'SKIP'
-)
+if [[ "${_git}" == "true" ]]; then
+  b2sums=(
+    '234e55a7eb5d9b882e45f9fb40446f765741130e4c3ebd01154344e48f0d3bcb6b36442d1c99c3574df239511959d542ec9b201fe269a1fd7b527edd058c54d5'
+    'SKIP'
+  )
+elif [[ "${_git}" == "false" ]]; then
+  sha256sums=(
+    "${_sum}"
+    "${_gnulib_sum}"
+  )
+fi
 
 prepare() {
   cd \
