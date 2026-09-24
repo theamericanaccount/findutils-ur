@@ -122,7 +122,7 @@ pkgname=(
   "${_pkg}"
 )
 pkgver=4.11.0
-pkgrel=1
+pkgrel=2
 _pkgdesc=(
   "GNU utilities to locate files"
 )
