@@ -2081,6 +2081,24 @@ jobs:
             -Syu \
             --noconfirm
       - name:
+          Installs jq.
+        run: |
+          fur \
+            -v \
+            -d \
+            "jq"
+          rm \
+            "${HOME}/fur/mingw64/x86_64/"*".pkg.tar."*".sig"
+          tree \
+            "${HOME}"
+          pacman \
+            -Udd \
+            --noconfirm \
+            "${HOME}/fur/mingw64/x86_64/"*".pkg.tar."*
+          rm \
+            -rf \
+            "${HOME}/fur"
+      - name:
           Installs Crash Bash Library.
         run: |
           git \
@@ -2262,6 +2280,16 @@ jobs:
           make \
             PREFIX="/usr" \
             install-fur
+      - name:
+          Installs jq.
+        run: |
+          fur \
+            -v \
+            -p \
+              "pacman" \
+            -t \
+              "ci" \
+            "jq"
       # - name:
       #     Installs Rust.
       #   run: |
