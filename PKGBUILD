@@ -227,18 +227,30 @@ fi
 prepare() {
   cd \
     "${_tarname}"
-  git \
-    submodule \
-      init
-  git \
-    config \
-      "submodule.gnulib.url" \
-      "${srcdir}/${_gnulib_tarname}"
-  git \
-    -c \
-      "protocol.file.allow=always" \
-    submodule \
-      update
+  if [[ "${_git}" == "true" ]]; then
+    git \
+      submodule \
+        init
+    git \
+      config \
+        "submodule.gnulib.url" \
+        "${srcdir}/${_gnulib_tarname}"
+    git \
+      -c \
+        "protocol.file.allow=always" \
+      submodule \
+        update
+  elif [[ "${_git}" == "true" ]]; then
+    if [[ -d "gnulib" ]]; then
+      mv \
+        "${srcdir}/${_gnulib_tarname}/"* \
+        "gnulib"
+    elif [[ ! -d "gnulib" ]]; then
+      mv \
+        "${srcdir}/${_gnulib_tarname}" \
+        "${PWD}"
+    fi
+  fi
   ./bootstrap
 }
 
