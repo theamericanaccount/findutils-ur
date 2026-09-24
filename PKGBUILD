@@ -133,6 +133,15 @@ _pkgdesc=(
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
+  'aarch64'
+  'armv8l'
+  'armv7l'
+  'armv6l'
+  'arm'
+  'i686'
+  'mips'
+  'pentium4'
+  'powerpc'
   'x86_64'
 )
 license=(
@@ -225,6 +234,8 @@ elif [[ "${_git}" == "false" ]]; then
 fi
 
 prepare() {
+  local \
+    _bootstrap_opts=()
   cd \
     "${_tarname}"
   if [[ "${_git}" == "true" ]]; then
@@ -255,12 +266,16 @@ prepare() {
         "${srcdir}/${_gnulib_tarname}" \
         "${PWD}/gnulib"
     fi
-    sed \
-      -i
-      "/prepare_GNULIB_SRCDIR$/d" \
-      "${PWD}/bootstrap"
+    # sed \
+    #   -i
+    #   "/prepare_GNULIB_SRCDIR$/d" \
+    #   "${PWD}/bootstrap"
+    _bootstrap_opts+=(
+      --no-git
+    )
   fi
-  "${PWD}/bootstrap"
+  "${PWD}/bootstrap" \
+    "${_bootstrap_opts[@]}"
 }
 
 build() {
