@@ -255,17 +255,17 @@ prepare() {
     if [[ -e ".gitmodules" ]]; then
       rm \
         -v \
-	"${PWD}/.gitmodules"
+        "${PWD}/.gitmodules"
     fi
-    if [[ -d "gnulib" ]]; then
-      mv \
-        "${srcdir}/${_gnulib_tarname}/"* \
-        "gnulib"
-    elif [[ ! -d "gnulib" ]]; then
-      mv \
-        "${srcdir}/${_gnulib_tarname}" \
-        "${PWD}/gnulib"
-    fi
+    # if [[ -d "gnulib" ]]; then
+    #   mv \
+    #     "${srcdir}/${_gnulib_tarname}/"* \
+    #     "gnulib"
+    # elif [[ ! -d "gnulib" ]]; then
+    #   mv \
+    #     "${srcdir}/${_gnulib_tarname}" \
+    #     "${PWD}/gnulib"
+    # fi
     # sed \
     #   -i
     #   "/prepare_GNULIB_SRCDIR$/d" \
@@ -276,6 +276,7 @@ prepare() {
       #   "${srcdir}/${_gnulib_tarname}"
     )
   fi
+  GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"
   "${PWD}/bootstrap" \
     "${_bootstrap_opts[@]}"
 }
