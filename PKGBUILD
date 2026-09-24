@@ -127,7 +127,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=12
+pkgrel=13
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -251,27 +251,29 @@ prepare() {
         "protocol.file.allow=always" \
       submodule \
         update
-  elif [[ "${_git}" == "true" ]]; then
+  elif [[ "${_git}" == "false" ]]; then
     if [[ -e ".gitmodules" ]]; then
       rm \
         -v \
 	"${PWD}/.gitmodules"
     fi
-    if [[ -d "gnulib" ]]; then
-      mv \
-        "${srcdir}/${_gnulib_tarname}/"* \
-        "gnulib"
-    elif [[ ! -d "gnulib" ]]; then
-      mv \
-        "${srcdir}/${_gnulib_tarname}" \
-        "${PWD}/gnulib"
-    fi
+    # if [[ -d "gnulib" ]]; then
+    #   mv \
+    #     "${srcdir}/${_gnulib_tarname}/"* \
+    #     "gnulib"
+    # elif [[ ! -d "gnulib" ]]; then
+    #   mv \
+    #     "${srcdir}/${_gnulib_tarname}" \
+    #     "${PWD}/gnulib"
+    # fi
     # sed \
     #   -i
     #   "/prepare_GNULIB_SRCDIR$/d" \
     #   "${PWD}/bootstrap"
     _bootstrap_opts+=(
       --no-git
+      --gnulib-srcdir
+        "${srcdir}/${_gnulib_tarname}"
     )
   fi
   "${PWD}/bootstrap" \
