@@ -2287,10 +2287,20 @@ jobs:
           GITHUB_TOKEN:
             ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pacman \
-            -S \
-            --noconfirm \
-            "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
+          fur \
+            -v \
+            -t \
+              "ci" \
+            -m \
+              "github" \
+            -p \
+              "pacman" \
+            "github-cli" || \
+          true; \
+          # pacman \
+          #   -S \
+          #   --noconfirm \
+          #   "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
           bash \
             ".github/gur-mini" \
             "themartiancompany" \
