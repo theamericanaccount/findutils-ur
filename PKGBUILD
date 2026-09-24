@@ -109,7 +109,7 @@ if [[ ! -v "_archive_format" ]]; then
       _archive_format="zip"
     elif [[ "${_git_service}" == "gitlab" ]]; then
       _archive_format="tar.gz"
-    if [[ "${_git_service}" == "gnu" ]]; then
+    elif [[ "${_git_service}" == "gnu" ]]; then
       _archive_format="tar.gz"
     fi
   fi
