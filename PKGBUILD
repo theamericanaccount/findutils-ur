@@ -64,6 +64,18 @@ else
   _libcompiler="gcc-libs"
   _sh="sh"
 fi
+_evmfs_available="$(
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
 if [[ ! -v "_ns" ]]; then
   _ns="themartiancompany"
   _ns="gnu"
@@ -83,6 +95,23 @@ if [[ ! -v "_tag_name" ]]; then
     _tag_name="tag"
   elif [[ "${_ns}" == "themartiacompany" ]]; then
     _tag_name="commit"
+  fi
+fi
+if [[ ! -v "_archive_format" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      _archive_format="bundle"
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="git"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _archive_format="zip"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _archive_format="tar.gz"
+    if [[ "${_git_service}" == "gnu" ]]; then
+      _archive_format="tar.gz"
+    fi
   fi
 fi
 _py="python"
@@ -127,6 +156,12 @@ fi
 _tarname="${_pkg}-${_tag}"
 if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
+  _tarname_gnulib="gnulib"
+  _tarfile_gnulib="${_tarfile_gnulib}"
+elif [[ "${_git}" == "false" ]]; then
+  _tarfile="${_tarname}.${_archive_format}"
+  _tarname_gnulib="gnulib"
+  _tarfile_gnulib="${_tarname_gnulib}.${_archive_format}"
 fi
 url="https://www.${_proj}.org/software/${_pkg}"
 _url=
@@ -138,7 +173,7 @@ if [[ "${_git_service}" == "gnu" ]]; then
   _gnulib_url="${_http}/gnulib.git"
 fi
 _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
-_gnulib_src="${_tarfile_gnulib::}git+${_gnulib_url}"
+_gnulib_src="${_tarfile_gnulib}::git+${_gnulib_url}"
 source=(
   "${_src}"
   "${_gnulib_src}"
@@ -165,7 +200,7 @@ prepare() {
   git \
     config \
       "submodule.gnulib.url" \
-      "${srcdir}/gnulib"
+      "${srcdir}/${_gnulib_tarname}"
   git \
     -c \
       "protocol.file.allow=always" \
