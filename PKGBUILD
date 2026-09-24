@@ -67,6 +67,13 @@ fi
 if [[ ! -v "_git" ]]; then
   _git="true"
 fi
+if [[ ! -v "_git_service" ]]; then
+  if [[ "${_ns}" == "gnu" ]]; then
+    _git_service="${_ns}"
+  elif [[ "${_ns}" == "themartiancompany" ]]; then
+    _git_service="github"
+  fi
+fi
 if [[ ! -v "_ns" ]]; then
   _ns="themartiancompany"
   _ns="gnu"
@@ -84,6 +91,7 @@ _pkg=findutils
 pkgbase="${_pkg}"
 pkgname=(
   "${_pkg}"
+)
 pkgver=4.11.0
 pkgrel=1
 _pkgdesc=(
