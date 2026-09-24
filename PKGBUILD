@@ -313,6 +313,8 @@ prepare() {
       "${PWD}/bootstrap"
     _android_fix_shebang \
       "${srcdir}/${_gnulib_tarname}/gnulib-tool"
+    _android_fix_shebang \
+      "${srcdir}/${_gnulib_tarname}/gnulib-tool.py"
     # termux-fix-shebang \
     #   "/data/data/com.termux/files/usr/bin/fur"; \
   fi
