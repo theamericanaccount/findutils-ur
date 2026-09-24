@@ -127,7 +127,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=16
+pkgrel=17
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -155,6 +155,11 @@ makedepends=(
   "${_py}"
   "wget"
 )
+# if [[ "${_os}" == "Android" ]]; then
+#   makedepends+=(
+#     "termux-fix-shebang"
+#   )
+# fi
 if [[ "${_git}" == "true" ]]; then
   makedepends+=(
     "git"
@@ -281,9 +286,11 @@ prepare() {
       -o)"
   if [[ "${_os}" == "Android" ]]; then
     sed \
-      "s%#! /bin/sh%#!/usr/bin/env bash%g" \
+      "s%#! /bin/sh%#!/data/data/com.termux/files/usr/bin/env bash%g" \
       -i \
       "${PWD}/bootstrap"
+    # termux-fix-shebang \
+    #   "/data/data/com.termux/files/usr/bin/fur"; \
   fi
   export \
     GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"; \
