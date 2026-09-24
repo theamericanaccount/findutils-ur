@@ -146,7 +146,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=33
+pkgrel=34
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -273,14 +273,13 @@ if [[ "${_git}" == "true" ]]; then
 elif [[ "${_git}" == "false" ]]; then
   sha256sums=(
     "${_sum}"
-    "${_gnulib_sum}"
   )
 fi
 if [[ "${_release}" == "false" ]]; then
   source+=(
     "${_gnulib_src}"
   )
-  sha256sums=(
+  sha256sums+=(
     "${_gnulib_sum}"
   )
 fi
