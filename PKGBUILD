@@ -130,7 +130,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=20
+pkgrel=21
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -249,6 +249,19 @@ elif [[ "${_git}" == "false" ]]; then
   )
 fi
 
+_android_fix_shebang() {
+  local \
+    _file="${1}" \
+    _pattern \
+    _repl
+  _pattern="#! /bin/sh"
+  _repl="#!/data/data/com.termux/files/usr/bin/env bash"
+  sed \
+    "s%${_pattern}%${_repl}%g" \
+    -i \
+    "${_file}"
+}
+
 prepare() {
   local \
     _bootstrap_opts=() \
@@ -296,10 +309,10 @@ prepare() {
     uname \
       -o)"
   if [[ "${_os}" == "Android" ]]; then
-    sed \
-      "s%#! /bin/sh%#!/data/data/com.termux/files/usr/bin/env bash%g" \
-      -i \
+    _android_fix_shebang \
       "${PWD}/bootstrap"
+    _android_fix_shebang \
+      "${srcdir}/${_gnulib_tarname}/gnulib-tool"
     # termux-fix-shebang \
     #   "/data/data/com.termux/files/usr/bin/fur"; \
   fi
