@@ -1872,6 +1872,7 @@ jobs:
             "PKGBUILD" \
             "makedepends"
           _evmfs="false" \
+          _git="false" \
           _git_service="github" \
           recipe-get \
             -o \
