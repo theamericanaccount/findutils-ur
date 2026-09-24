@@ -2290,7 +2290,7 @@ jobs:
           pacman \
             -S \
             --noconfirm \
-            "mingw-w64-${{ matrix.env }}-github-cli"
+            "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
           bash \
             ".github/gur-mini" \
             "themartiancompany" \
