@@ -157,7 +157,7 @@ _tarname="${_pkg}-${_tag}"
 if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
   _tarname_gnulib="gnulib"
-  _tarfile_gnulib="${_tarfile_gnulib}"
+  _tarfile_gnulib="${_tarname_gnulib}"
 elif [[ "${_git}" == "false" ]]; then
   _tarfile="${_tarname}.${_archive_format}"
   _tarname_gnulib="gnulib"
