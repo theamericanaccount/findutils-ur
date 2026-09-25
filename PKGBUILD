@@ -449,6 +449,9 @@ build() {
       "File"
       "'${srcdir}/${_tarname}/Makefile.in'"
       "does not exist."
+      "Git switch is set to '${_git}'."
+      "Contents of"
+      "'${srcdir}/${_tarname}':"
     )
     echo \
       "${_msg[*]}"
