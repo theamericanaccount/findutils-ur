@@ -2083,7 +2083,7 @@ jobs:
             dos2unix
             git
             mingw-w64-${{ matrix.env }}-gcc
-            mingw-w64-${{ matrix.env }}-mailcap
+            mailcap
             mingw-w64-${{ matrix.env }}-nodejs
             python-docutils
             tree
