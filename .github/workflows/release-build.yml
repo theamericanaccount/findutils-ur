@@ -2081,20 +2081,15 @@ jobs:
           install:
             base-devel
             dos2unix
-            # mingw-w64-ucrt-${{ matrix.env }}-github-cli
-            # NOTE:
-            #   Not working, we use a fur build;
-            #   mailcap below is a dependency.
-            mingw-w64-ucrt-${{ matrix.env }}-mailcap
             git
-            # mingw-w64-ucrt-${{ matrix.env }}-jq
-            # NOTE:
-            #   Also replaced by a fur build.
             mingw-w64-${{ matrix.env }}-gcc
+            mingw-w64-${{ matrix.env }}-mailcap
             mingw-w64-${{ matrix.env }}-nodejs
             python-docutils
             tree
             unzip
+            # mingw-w64-ucrt-${{ matrix.env }}-jq
+            # mingw-w64-ucrt-${{ matrix.env }}-github-cli
       - name:
           Upgrade MinGW64 environment.
         run: |
