@@ -113,7 +113,11 @@ if [[ "${_os}" == "Msys" ]]; then
 fi
 if [[ ! -v "_tag_name" ]]; then
   if [[ "${_ns}" == "gnu" ]]; then
-    _tag_name="tag"
+    if [[ "${_release}" == "true" ]]; then
+      _tag_name="tag"
+    elif [[ "${_release}" == "false" ]]; then
+      _tag_name="commit"
+    fi
   elif [[ "${_ns}" == "themartiancompany" ]]; then
     _tag_name="commit"
   fi
@@ -155,7 +159,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=47
+pkgrel=48
 _pkgdesc=(
   "GNU utilities to locate files"
 )
