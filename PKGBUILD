@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=108
+pkgrel=109
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -504,6 +504,8 @@ build() {
   local \
     _configure_opts=() \
     _cppflags=() \
+    _makefile \
+    _makefiles \
     _usr
   _usr="$(
     _usr_get)"
@@ -572,6 +574,28 @@ build() {
       "s%/bin/sh%/${_usr}/bin/sh%g" \
       -i \
       "${PWD}/configure"
+    _makefiles=( $(
+      find \
+        "${PWD}" \
+        -type \
+          "f" \
+        -name \
+          "Makefile*" \
+        -exec \
+          echo \
+            '"'{}'"' \; || \
+      true)
+    )
+    for _makefile in "${_makefiles[@]}"; do
+      sed \
+        "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
+        -i \
+	"${_makefile}"
+    done
+    sed \
+      "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
+      -i \
+      "${PWD}/po/Makefile.in.in"
   fi
   SHELL="${_usr}/bin/bash" \
   "${PWD}/configure" \
