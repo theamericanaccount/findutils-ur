@@ -140,11 +140,34 @@ _gur_mini() {
           --pattern
             '*.pkg.tar.xz'
       )
+      echo \
+        "cmd //help"
+      cmd \
+        //help || \
+      true
+      echo \
+        "cmd --help"
+      cmd \
+        --help || \
+      true
+      echo \
+        "cmd -defterm -no-start -ucrt64 -c '${_gh_cmd[*]}'"
+      cmd \
+        -defterm \
+        -no-start \
+        -ucrt64 \
+        -c \
+          "\"${_gh_cmd[*]}\"" || \
+      true
+      echo \
+        "cmd //defterm //no-start //ucrt64 //c '${_gh_cmd[*]}'"
+      cmd \
         //defterm \
         //no-start \
         //ucrt64 \
         //c \
-          "${_gh_cmd[*]}"
+          "\"${_gh_cmd[*]}\"" || \
+      true
     fi
   fi
 }
