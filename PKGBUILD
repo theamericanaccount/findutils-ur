@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=109
+pkgrel=110
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -230,6 +230,20 @@ makedepends=(
   "${_py}"
   "wget"
 )
+# if [[ "${_os}" == "Android" ]]; then
+#   # I'm introducing an almost circular
+#   # dependency
+#   _find="$(
+#     command \
+#       -v \
+#       "find" || \
+#     true)"
+#   if [[ "${_find}" != "" ]]; then
+#     makedepends+=(
+#       "findutils"
+#     )
+#   fi
+# fi
 if [[ "${_os}" == "Msys" ]]; then
   makedepends+=(
     'gettext-devel'
@@ -574,24 +588,46 @@ build() {
       "s%/bin/sh%/${_usr}/bin/sh%g" \
       -i \
       "${PWD}/configure"
-    _makefiles=( $(
-      find \
-        "${PWD}" \
-        -type \
-          "f" \
-        -name \
-          "Makefile*" \
-        -exec \
-          echo \
-            '"'{}'"' \; || \
-      true)
-    )
-    for _makefile in "${_makefiles[@]}"; do
-      sed \
-        "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
-        -i \
-	"${_makefile}"
-    done
+    # The array below is not an issue
+    # because no path in current
+    # directory contains a space
+    if [[ "${_find}" != "" ]]; then
+      _msg=(
+        "Found 'find' already,"
+        "so using it."
+      )
+      _makefiles=( $(
+        find \
+          "./" \
+          -type \
+            "f" \
+          -name \
+            "Makefile*" || \
+        true)
+      )
+      for _makefile in "${_makefiles[@]}"; do
+        sed \
+          "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
+          -i \
+         "${PWD}/${_makefile}"
+      done
+    else
+      for _makefile in \
+        "./Makefile"*
+        "./"*"/Makefile"*
+        "./"*"/"*"/Makefile"*; do
+	_msg=(
+          "Fixing 'SHELL' variable"
+          "in Makefile '${PWD}/${_makefile}'".
+        )
+        echo \
+          "${_msg[*]}"
+        sed \
+          "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
+          -i \
+         "${PWD}/${_makefile}"
+      done
+    fi
     sed \
       "s%^SHELL = /bin/sh$%SHELL = ${_usr}/bin/sh%g" \
       -i \
