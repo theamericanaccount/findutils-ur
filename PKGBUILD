@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=83
+pkgrel=84
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -460,8 +460,10 @@ prepare() {
       "${PWD}/bootstrap" \
         "${_bootstrap_opts[@]}"
     elif [[ "${_release}" == "true" ]]; then
-      autoreconf \
-        -fi
+      if [[ ! -e "${PWD}/configure" ]]; then
+        autoreconf \
+          -fi
+      fi
     fi
   fi
 }
