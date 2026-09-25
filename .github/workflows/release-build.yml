@@ -2346,25 +2346,27 @@ jobs:
           GITHUB_TOKEN:
             ${{ secrets.GITHUB_TOKEN }}
         run: |
-          fur \
-            -v \
-            -t \
-              "ci" \
-            -m \
-              "github" \
-            -R \
-              "n" \
-            -p \
-              "pacman" \
-            "github-cli" || \
-          true; \
+          if [[ "${{ matrix.sys }}" == "mingw64" ]]; then \
+            fur \
+              -v \
+              -t \
+                "ci" \
+              -m \
+                "github" \
+              -R \
+                "n" \
+              -p \
+                "pacman" \
+              "github-cli" || \
+            true; \
+            pacman \
+              -Ql \
+              "github-cli"; \
+              fi
           pacman \
-            -Ql \
-            "github-cli"
-          # pacman \
-          #   -S \
-          #   --noconfirm \
-          #   "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
+            -S \
+            --noconfirm \
+            "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
           bash \
             ".github/gur-mini" \
             "themartiancompany" \
