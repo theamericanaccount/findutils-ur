@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=82
+pkgrel=83
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -329,6 +329,7 @@ if [[ "${_release}" == "true" ]]; then
     _http="https://mirrors.kernel.org"
     _uri="${_http}/${_proj}/${_pkg}/${_tarfile}"
     _src="${_tarfile}::${_uri}"
+    _sum="${_kernel_release_sum}"
   fi
 fi
 source=(
