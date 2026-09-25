@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=87
+pkgrel=88
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -391,12 +391,6 @@ _prepare_android() {
   if [[ "${_os}" == "Android" ]]; then
     _android_fix_shebang \
       "${PWD}/bootstrap"
-    if [[ -e "${PWD}/configure" ]]; then
-      _android_fix_shebang \
-        "${PWD}/configure"
-    fi
-    _android_fix_shebang \
-      "${PWD}/bootstrap"
     _android_fix_shebang \
       "${_gnulib_srcdir_path}/gnulib-tool"
     _android_fix_shebang \
@@ -474,10 +468,25 @@ prepare() {
   fi
 }
 
+_usr_get() {
+  local \
+    _bin
+  _bin="$(
+    dirname \
+      "$(command \
+           -v \
+           "env")")"
+  dirname \
+    "${_bin}"
+}
+
 build() {
   local \
     _configure_opts=()
-    _cppflags=()
+    _cppflags=() \
+    _usr
+  _usr="$(
+    _usr_get)"
   _cppflags+=(
     ${CPPFLAGS}
     # This is needed for find to implement support for the
@@ -535,7 +544,15 @@ build() {
       -lsh \
       "${srcdir}/${_tarname}"
   fi
-  ./configure \
+  if [[ "${_os}" == "Android" ]]; then
+    # _android_fix_shebang \
+    #   "${PWD}/configure"
+    sed \
+      "%s/bin/sh%/${_usr}/bin/sh/g" \
+      -i \
+      "${PWD}/configure"
+  fi
+  "${PWD}/configure" \
     "${_configure_opts[@]}"
   # don't build locate, but the docs want a file in there.
   if [[ "${_docs}" == "true" ]]; then
