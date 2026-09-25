@@ -165,7 +165,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=63
+pkgrel=64
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -213,11 +213,11 @@ if [[ "${_git}" == "true" ]]; then
   )
 fi
 if [[ ! -v "_tag" ]]; then
+  _gnulib_tag="${_gnulib_commit}"
   if [[ "${_tag_name}" == "tag" ]]; then
     _tag="v${pkgver}"
   elif [[ "${_tag_name}" == "commit" ]]; then
     _tag="${_commit}"
-    _gnulib_tag="${_gnulib_commit}"
   fi
 fi
 _tarname="${_pkg}-${_tag}"
