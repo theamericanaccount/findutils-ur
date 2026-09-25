@@ -183,7 +183,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=74
+pkgrel=75
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -274,6 +274,8 @@ if [[ "${_ns}" == "gnu" ]]; then
   elif [[ "${_git}" == "false" ]]; then
     _http="https://ftp.${_ns}.org/pub/${_ns}"
   fi
+elif [[ "${_ns}" == "themartiancompany" ]]; then
+  _http="https://${_git_service}.com"
 fi
 if [[ "${_git_service}" == "gnu" ]]; then
   if [[ "${_git}" == "true" ]]; then
