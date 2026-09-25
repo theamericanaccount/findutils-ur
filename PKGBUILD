@@ -95,7 +95,9 @@ if [[ ! -v "_git" ]]; then
   # only from GNU tarball
   # release.
 fi
-_git="true"
+if [[ "${_os}" == "GNU/Linux" ]]; then
+  _git="true"
+fi
 if [[ "${_os}" == "Msys" || \
       "${_os}" == "Android" ]]; then
   _git="false"
@@ -183,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=75
+pkgrel=76
 _pkgdesc=(
   "GNU utilities to locate files"
 )
