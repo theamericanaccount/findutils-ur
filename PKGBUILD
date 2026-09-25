@@ -165,7 +165,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=69
+pkgrel=70
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -248,7 +248,7 @@ url="https://www.${_proj}.org/software/${_pkg}"
 if [[ "${_ns}" == "gnu" ]]; then
   if [[ "${_git}" == "true" ]]; then
     _http="https://git.savannah.${_ns}.org/git"
-  elif [[ "${_git}" == "true" ]]; then
+  elif [[ "${_git}" == "false" ]]; then
     _http="https://ftp.${_ns}.org/pub/${_ns}"
   fi
 fi
