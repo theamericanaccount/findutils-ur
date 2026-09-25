@@ -40,6 +40,8 @@ _gur_mini() {
     _tag \
     _arch \
     _project_id \
+    _gh \
+    _gh_cmd=() \
     _gl_dl_opts=() \
     _api \
     _url \
@@ -114,18 +116,21 @@ _gur_mini() {
           --pattern \
             '*.pkg.tar.xz'
     else
+      _gh_cmd=(
+        "${_gh}"
+        "${_gh_opts[@]}"
+        release
+          download
+          "${_tag}"
+          --pattern
+            '*.pkg.tar.xz'
+      )
       cmd \
         //defterm \
         //no-start \
         //ucrt64 \
         //c \
-        "${_gh}" \
-        "${_gh_opts[@]}" \
-        release \
-          download \
-          "${_tag}" \
-          --pattern \
-            '*.pkg.tar.xz'
+        "${_gh_cmd[*]}"
     fi
   fi
 }
