@@ -159,7 +159,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=49
+pkgrel=50
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -320,7 +320,11 @@ _android_fix_shebang() {
 prepare() {
   local \
     _bootstrap_opts=() \
+    _gnulib_clone_path \
+    _gnulib_srcdir_path \
     _os
+  _gnulib_clone_path="${srcdir}/${_gnulib_tarname}"
+  _gnulib_srcdir_path="${srcdir}/${_tarname}/gnulib"
   cd \
     "${_tarname}"
   if [[ "${_git}" == "true" ]]; then
@@ -343,16 +347,16 @@ prepare() {
           -v \
           "${PWD}/.gitmodules"
       fi
-      if [[ -d "gnulib" ]]; then
+      if [[ -d "${_gnulib_srcdir_path}" ]]; then
         mv \
 	  -v \
-          "${srcdir}/${_gnulib_tarname}/"* \
-          "gnulib"
-      elif [[ ! -d "gnulib" ]]; then
+          "${_gnulib_clone_path}/"* \
+          "${_gnulib_srcdir_path}"
+      elif [[ ! -d "${_gnulib_srcdir_path}" ]]; then
         mv \
           -v \
-          "${srcdir}/${_gnulib_tarname}" \
-          "${PWD}/gnulib"
+          "${_gnulib_clone_path}" \
+          "${_gnulib_srcdir_path}"
       fi
       # sed \
       #   -i
@@ -368,15 +372,15 @@ prepare() {
         _android_fix_shebang \
           "${PWD}/bootstrap"
         _android_fix_shebang \
-          "gnulib/gnulib-tool"
+          "${_gnulib_srcdir_path}/gnulib-tool"
         _android_fix_shebang \
-          "gnulib/gnulib-tool.py"
+          "${_gnulib_srcdir_path}/gnulib-tool.py"
         # termux-fix-shebang \
         #   "/data/data/com.termux/files/usr/bin/fur";
       fi
       export \
-        GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"; \
-      GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}" \
+        GNULIB_SRCDIR="${_gnulib_srcdir_path}"; \
+      GNULIB_SRCDIR="${_gnulib_srcdir_path}" \
       "${PWD}/bootstrap" \
         "${_bootstrap_opts[@]}"
     elif [[ "${_release}" == "true" ]]; then
