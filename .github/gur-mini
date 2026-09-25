@@ -100,7 +100,7 @@ _gur_mini() {
         fi
       fi
     fi
-    gh \
+    ${_gh} \
       "${_gh_opts[@]}" \
       release \
         download \
