@@ -2346,60 +2346,60 @@ jobs:
           GITHUB_TOKEN:
             ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${{ matrix.sys }}" == "mingw64" ]]; then \
-            fur \
-              -v \
-              -t \
-                "ci" \
-              -m \
-                "github" \
-              -R \
-                "n" \
-              -p \
-                "pacman" \
-              "github-cli" || \
-            true; \
-            pacman \
-              -Ql \
-              "github-cli"; \
-          elif [[ "${{ matrix.sys }}" == "MSYS" ]]; then \
-            pacman \
-              -S \
-              --noconfirm \
-              "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
-            pacman \
-              -Ql \
-              "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
-            _bin="$( \
-              dirname "$( \
-                command \
-                  -v \
-                  "env")")"; \
-            ln \
-              -s \
-              "/ucrt64/bin/github-cli" \
-              "${_bin}/github-cli" || \
-            true; \
-          fi
-          bash \
-            ".github/gur-mini" \
-            "themartiancompany" \
-            "evm-gnupg" \
-            "0.0.0.0.0.0.0.0.1.1.1.1.1.1-15"
-          # git \
-          #   clone \
-          #     --single-branch \
-          #     --depth=1 \
-          #     "https://github.com/themartiancompany/evm-gnupg" \
-          #     "${HOME}/evm-gnupg-src" || \
-          # true
-          # cd \
-          #   "${HOME}/evm-gnupg-src"
-          # make \
-          #   -C \
-          #       "${HOME}/evm-gnupg-src" \
-          #   PREFIX="/usr" \
-          #   install-scripts
+          git \
+            clone \
+              --single-branch \
+              --depth=1 \
+              "https://github.com/themartiancompany/evm-gnupg" \
+              "${HOME}/evm-gnupg-src" || \
+          true
+          cd \
+            "${HOME}/evm-gnupg-src"
+          make \
+            -C \
+                "${HOME}/evm-gnupg-src" \
+            PREFIX="/usr" \
+            install-scripts
+          # if [[ "${{ matrix.sys }}" == "mingw64" ]]; then \
+          #   fur \
+          #     -v \
+          #     -t \
+          #       "ci" \
+          #     -m \
+          #       "github" \
+          #     -R \
+          #       "n" \
+          #     -p \
+          #       "pacman" \
+          #     "github-cli" || \
+          #   true; \
+          #   pacman \
+          #     -Ql \
+          #     "github-cli"; \
+          # elif [[ "${{ matrix.sys }}" == "MSYS" ]]; then \
+          #   pacman \
+          #     -S \
+          #     --noconfirm \
+          #     "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
+          #   pacman \
+          #     -Ql \
+          #     "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
+          #   _bin="$( \
+          #     dirname "$( \
+          #       command \
+          #         -v \
+          #         "env")")"; \
+          #   ln \
+          #     -s \
+          #     "/ucrt64/bin/github-cli" \
+          #     "${_bin}/github-cli" || \
+          #   true; \
+          # fi
+          # bash \
+          #   ".github/gur-mini" \
+          #   "themartiancompany" \
+          #   "evm-gnupg" \
+          #   "0.0.0.0.0.0.0.0.1.1.1.1.1.1-15"
       - name:
           Installs build dependencies.
         env:
