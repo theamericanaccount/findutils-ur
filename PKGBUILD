@@ -171,8 +171,7 @@ if [[ ! -v "_archive_format" ]]; then
 fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
-  if [[ "${_os}" == "Msys" || \
-        "${_os}" == "Android" ]]; then
+  if [[ "${_os}" == "Msys" ]]; then
     _docs="false"
   fi
 fi
@@ -186,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=100
+pkgrel=101
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -224,6 +223,7 @@ fi
 makedepends=(
   "autoconf"
   "automake"
+  "autotools"
   "${_compiler}"
   "gettext"
   "gperf"
@@ -232,12 +232,10 @@ makedepends=(
 )
 if [[ "${_os}" == "Msys" ]]; then
   makedepends+=(
-    'autotools'
     'gettext-devel'
     'libiconv-devel'
   )
 fi
-makedepends=('libiconv-devel' 'gettext-devel' 'autotools' 'gcc')
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
     "texinfo"
@@ -569,14 +567,19 @@ build() {
   fi
   "${PWD}/configure" \
     "${_configure_opts[@]}"
-  # don't build locate, but the docs want a file in there.
+  # Arch Linux doesn't build locate,
+  # but the docs want a file in there.
+  if [[ "${_release}" != "false" ]]; then
+    make \
+      -C \
+        "locate" \
+      dblocation.texi
+  fi
   if [[ "${_docs}" == "true" ]]; then
-    if [[ "${_release}" != "false" ]]; then
-      make \
-        -C \
-          "locate" \
-        dblocation.texi
-    fi
+    make \
+      -C \
+        "locate" \
+      dblocation.texi
   fi
   CPPFLAGS="${_cppflags[*]}" \
   make
