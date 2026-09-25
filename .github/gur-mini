@@ -100,13 +100,33 @@ _gur_mini() {
         fi
       fi
     fi
-    ${_gh} \
-      "${_gh_opts[@]}" \
-      release \
-        download \
-        "${_tag}" \
-        --pattern \
-          '*.pkg.tar.xz'
+    _bin="$(
+      dirname \
+        "$(command \
+             -v \
+             "env")")"
+    if [[ "${_os}" != "Msys" ]]; then
+      "${_gh}" \
+        "${_gh_opts[@]}" \
+        release \
+          download \
+          "${_tag}" \
+          --pattern \
+            '*.pkg.tar.xz'
+    else
+      cmd \
+        //defterm \
+        //no-start \
+        //ucrt64 \
+        //c \
+        "${_gh}" \
+        "${_gh_opts[@]}" \
+        release \
+          download \
+          "${_tag}" \
+          --pattern \
+            '*.pkg.tar.xz'
+    fi
   fi
 }
 
