@@ -449,6 +449,15 @@ prepare() {
 build() {
   local \
     _configure_opts=()
+    _cppflags=()
+  _cppflags+=(
+    ${CPPFLAGS}
+    # This is needed for find to implement support for the
+    # -fstype parameter by parsing /proc/self/mountinfo:
+    " -DMOUNTED_GETMNTENT1=1"
+  )
+  export \
+    CPPFLAGS="${_cppflags[*]}"
   _configure_opts+=(
     --prefix="/usr"
   )
@@ -507,6 +516,7 @@ build() {
         "locate" \
       dblocation.texi
   fi
+  CPPFLAGS="${_cppflags[*]}" \
   make
 }
 
