@@ -135,6 +135,9 @@ if [[ ! -v "_archive_format" ]]; then
 fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
+  if [[ "${_os}" == "Msys" ]]; then
+    _docs="false"
+  fi
 fi
 _py="python"
 _proj=gnu
@@ -146,7 +149,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=37
+pkgrel=38
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -325,10 +328,12 @@ prepare() {
       fi
       if [[ -d "gnulib" ]]; then
         mv \
+	  -v \
           "${srcdir}/${_gnulib_tarname}/"* \
           "gnulib"
       elif [[ ! -d "gnulib" ]]; then
         mv \
+          -v \
           "${srcdir}/${_gnulib_tarname}" \
           "${PWD}/gnulib"
       fi
@@ -351,10 +356,10 @@ prepare() {
         _android_fix_shebang \
           "${srcdir}/${_gnulib_tarname}/gnulib-tool.py"
         # termux-fix-shebang \
-        #   "/data/data/com.termux/files/usr/bin/fur"; \
+        #   "/data/data/com.termux/files/usr/bin/fur";
       fi
       export \
-        GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"
+        GNULIB_SRCDIR="${srcdir}/${_gnulib_tarname}"; \
       "${PWD}/bootstrap" \
         "${_bootstrap_opts[@]}"
     elif [[ "${_release}" == "true" ]]; then
