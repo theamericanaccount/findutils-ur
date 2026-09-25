@@ -2367,10 +2367,18 @@ jobs:
               -S \
               --noconfirm \
               "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
+            pacman \
+              -Ql \
+              "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
+            _bin="$( \
+              dirname "$( \
+                command \
+                  -v \
+                  "env")")"; \
             ln \
               -s \
               "/ucrt64/bin/github-cli" \
-              "/usr/bin/github-cli" || \
+              "${_bin}/github-cli" || \
             true; \
           fi
           bash \
