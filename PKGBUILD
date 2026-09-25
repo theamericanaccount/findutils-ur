@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=85
+pkgrel=86
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -253,7 +253,6 @@ fi
 _github_sum="0aa6183ad71351039711e302646dfc46b5f7f8930414c88ddca9cb1319e41c4c"
 _gnulib_github_sum="81f7839181261a17785d4d05a1b45d1e7e23c932ff093cb1100a8cbdf95b680c"
 _gnu_release_sum='bfd19cb06cc71f3352d567e90284d8cdac02ac89774bbeadf0b533b0c11432fd'
-_kernel_release_sum="1387e0b67ff247d2abde998f90dfbf70c1491391a59ddfecb8ae698789f0a4f5"
 if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
   _gnulib_tarname="gnulib"
@@ -330,7 +329,7 @@ if [[ "${_release}" == "true" ]]; then
     _http="https://mirrors.kernel.org"
     _uri="${_http}/${_proj}/${_pkg}/${_tarfile}"
     _src="${_tarfile}::${_uri}"
-    _sum="${_kernel_release_sum}"
+    _sum="${_gnu_release_sum}"
   fi
 fi
 source=(
