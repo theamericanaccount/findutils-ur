@@ -2362,11 +2362,18 @@ jobs:
             pacman \
               -Ql \
               "github-cli"; \
-              fi
-          pacman \
-            -S \
-            --noconfirm \
-            "mingw-w64-ucrt-${{ matrix.env }}-github-cli"
+              fi; \
+          elif [[ "${{ matrix.sys }}" == "MSYS" ]]; then \
+            pacman \
+              -S \
+              --noconfirm \
+              "mingw-w64-ucrt-${{ matrix.env }}-github-cli"; \
+            ln \
+              -s \
+              "/ucrt64/bin/github-cli" \
+              "/usr/bin/github-cli" || \
+            true; \
+          fi
           bash \
             ".github/gur-mini" \
             "themartiancompany" \
