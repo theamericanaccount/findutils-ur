@@ -2303,17 +2303,17 @@ jobs:
           make \
             PREFIX="/usr" \
             install-fur
-      - name:
-          Installs jq.
-        run: |
-          fur \
-            -v \
-            -p \
-              "pacman" \
-            -t \
-              "ci" \
-            -T \
-            "jq"
+      # - name:
+      #     Installs jq.
+      #   run: |
+      #     fur \
+      #       -v \
+      #       -p \
+      #         "pacman" \
+      #       -t \
+      #         "ci" \
+      #       -T \
+      #       "jq"
       # - name:
       #     Installs Rust.
       #   run: |
