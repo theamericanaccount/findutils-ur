@@ -95,10 +95,25 @@ _gur_mini() {
       command \
         -v \
         gh)"
+    _msg=(
+      ""
+    )
     if [[ "${_os}" == "Msys2" ]]; then
       if [[ ! -e "${_gh}" ]]; then
-        if [[ -e "/ucrt64/bin/gh" ]]; then
-          _gh="/ucrt64/bin/gh"
+        if [[ -e "/ucrt64/bin/gh.exe" ]]; then
+          _gh="/ucrt64/bin/gh.exe"
+          _msg=(
+            "Selected '${_gh}.'"
+          )
+          echo \
+            "${_msg[*]}"
+        elif [[ -e "/mingw64/bin/gh.exe" ]]; then
+          _gh="/mingw64/bin/gh.exe"
+          _msg=(
+            "Selected '${_gh}.'"
+          )
+          echo \
+            "${_msg[*]}"
         fi
       fi
     fi
@@ -125,12 +140,11 @@ _gur_mini() {
           --pattern
             '*.pkg.tar.xz'
       )
-      cmd \
         //defterm \
         //no-start \
         //ucrt64 \
         //c \
-        "${_gh_cmd[*]}"
+          "${_gh_cmd[*]}"
     fi
   fi
 }
