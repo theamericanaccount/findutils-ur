@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=76
+pkgrel=77
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -287,7 +287,7 @@ if [[ "${_git_service}" == "gnu" ]]; then
     _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
     _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
   elif [[ "${_git}" == "false" ]]; then
-    _url="${_http}/${_pkg}/${_tarname}.tar.xz"
+    _uri="${_http}/${_pkg}/${_tarname}.tar.xz"
     _src="${_tarfile}::${_uri}"
     _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
   fi
