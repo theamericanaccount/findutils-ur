@@ -2303,17 +2303,24 @@ jobs:
           make \
             PREFIX="/usr" \
             install-fur
-      # - name:
-      #     Installs jq.
-      #   run: |
-      #     fur \
-      #       -v \
-      #       -p \
-      #         "pacman" \
-      #       -t \
-      #         "ci" \
-      #       -T \
-      #       "jq"
+      - name:
+          Installs jq.
+        run: |
+          if [[ "${{ matrix.sys }}" == "mingw64" ]]; then \
+            fur \
+              -v \
+              -p \
+                "pacman" \
+              -t \
+                "ci" \
+              -T \
+              "jq"; \
+          elif [[ "${{ matrix.sys }}" == "MSYS" ]]; then \
+            pacman \
+              -S \
+              --noconfirm \
+              "jq"; \
+          fi
       # - name:
       #     Installs Rust.
       #   run: |
