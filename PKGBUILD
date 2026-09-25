@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=77
+pkgrel=78
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -288,6 +288,9 @@ if [[ "${_git_service}" == "gnu" ]]; then
     _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
   elif [[ "${_git}" == "false" ]]; then
     _uri="${_http}/${_pkg}/${_tarname}.tar.xz"
+    _http="https://git.savannah.${_ns}.org/git"
+    _gnulib_url="${_http}/themartiancompany/gnulib"
+    _gnulib_uri="${_gnulib_url}/archive/${_gnulib_commit}.${_archive_format}"
     _src="${_tarfile}::${_uri}"
     _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
   fi
