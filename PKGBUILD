@@ -161,7 +161,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=58
+pkgrel=59
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -263,19 +263,25 @@ elif [[ "${_git_service}" == "github" ]]; then
   _http="https://${_git_service}.com"
   _url="${_http}/${_ns}/${_pkg}"
   _gnulib_url="${_http}/${_ns}/gnulib"
-  if [[ "${_tag_name}" == "commit" ]]; then
-    _uri="${_url}/archive/${_commit}.${_archive_format}"
-    _gnulib_uri="${_gnulib_url}/archive/${_gnulib_commit}.${_archive_format}"
-    _sum="${_github_sum}"
-  else
-    echo \
-      "Not written." \
-      1>&2
-    exit \
-      1
+  if [[ "${_git}" == "false" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/archive/${_commit}.${_archive_format}"
+        _gnulib_uri="${_gnulib_url}/archive/${_gnulib_commit}.${_archive_format}"
+        _sum="${_github_sum}"
+      else
+        echo \
+          "Not written." \
+          1>&2
+        exit \
+          1
+      fi
+    _src="${_tarfile}::${_uri}"
+    _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
+  elif [[ "${_git}" == "true" ]]; then
+    _gnulib_uri="${_http}/${_ns}/gnulib.git"
+    _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
+    _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
   fi
-  _src="${_tarfile}::${_uri}"
-  _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
 fi
 source=(
   "${_src}"
