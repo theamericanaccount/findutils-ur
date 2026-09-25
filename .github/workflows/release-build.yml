@@ -2116,6 +2116,9 @@ jobs:
           rm \
             -rf \
             "${HOME}/fur"
+          rm \
+            -rf \
+            "${HOME}/fur"
       - name:
           Installs Crash Bash Library.
         run: |
@@ -2303,6 +2306,7 @@ jobs:
               "pacman" \
             -t \
               "ci" \
+            -T \
             "jq"
       # - name:
       #     Installs Rust.
