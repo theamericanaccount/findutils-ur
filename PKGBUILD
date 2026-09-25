@@ -77,16 +77,19 @@ if [[ ! -v "_evmfs" ]]; then
   fi
 fi
 if [[ ! -v "_git" ]]; then
-  _git="false"
+  _git="true"
+  if [[ "${_os}" == "Msys" ]]; then
+    _git="false"
+  fi
 fi
 if [[ ! -v "_ns" ]]; then
   if [[ "${_git}" == "true" ]]; then
     _ns="gnu"
   elif [[ "${_git}" == "false" ]]; then
     _ns="themartiancompany"
-    if [[ "${_os}" == "Msys" ]]; then
-      _ns="gnu"
-    fi
+  fi
+  if [[ "${_os}" == "Msys" ]]; then
+    _ns="gnu"
   fi
 fi
 if [[ ! -v "_release" ]]; then
@@ -149,7 +152,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=39
+pkgrel=41
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -211,6 +214,7 @@ if [[ "${_git}" == "true" ]]; then
   _tarfile="${_tarname}"
   _gnulib_tarname="gnulib"
   _gnulib_tarfile="${_gnulib_tarname}"
+  _gnulib_sum="SKIP"
 elif [[ "${_git}" == "false" ]]; then
   _tarfile="${_tarname}.${_archive_format}"
   _gnulib_tarname="gnulib-${_gnulib_tag}"

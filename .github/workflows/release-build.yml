@@ -2341,6 +2341,9 @@ jobs:
               "pacman" \
             "github-cli" || \
           true; \
+          pacman \
+            -Ql \
+            "github-cli"
           # pacman \
           #   -S \
           #   --noconfirm \
