@@ -2335,6 +2335,8 @@ jobs:
               "ci" \
             -m \
               "github" \
+            -R \
+              "n" \
             -p \
               "pacman" \
             "github-cli" || \
