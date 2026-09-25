@@ -81,10 +81,12 @@ if [[ ! -v "_git" ]]; then
   # On Windows it builds
   # only from GNU tarball
   # release.
-  if [[ "${_os}" == "Msys" ]]; then
-    _git="false"
-  fi
 fi
+_git="true"
+if [[ "${_os}" == "Msys" ]]; then
+  _git="false"
+fi
+
 if [[ ! -v "_ns" ]]; then
   if [[ "${_git}" == "true" ]]; then
     _ns="gnu"
@@ -159,7 +161,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=56
+pkgrel=57
 _pkgdesc=(
   "GNU utilities to locate files"
 )
