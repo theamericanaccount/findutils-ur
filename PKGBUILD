@@ -78,6 +78,9 @@ if [[ ! -v "_evmfs" ]]; then
 fi
 if [[ ! -v "_git" ]]; then
   _git="true"
+  # On Windows it builds
+  # only from GNU tarball
+  # release.
   if [[ "${_os}" == "Msys" ]]; then
     _git="false"
   fi
