@@ -2654,7 +2654,7 @@ jobs:
           _evmfs="false" \
           _git="false" \
           _git_service="github" \
-          PKGEXT="pkg.tar.xz" \
+          PKGEXT=".pkg.tar.xz" \
           reallymakepkg \
             -v \
             -w \
