@@ -2362,7 +2362,6 @@ jobs:
             pacman \
               -Ql \
               "github-cli"; \
-              fi; \
           elif [[ "${{ matrix.sys }}" == "MSYS" ]]; then \
             pacman \
               -S \
