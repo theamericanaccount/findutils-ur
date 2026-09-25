@@ -38,14 +38,27 @@
 _os="$(
   uname \
     -o)"
+_arch="$(
+  uname \
+    -m)"
+_disable_year38="false"
 if [[ "${_os}" == "Android" ]]; then
   _libc="ndk-sysroot"
   _compiler="clang"
   _libcompiler="llvm-libs"
+  if [[ "${_arch}" == "armv8l" || \
+        "${_arch}" == "arm" || \
+        "${_arch}" == "i686" ]]; then
+    _disable_year38="true"   
+  fi
 elif [[ "${_os}" == "GNU/Linux" ]]; then
   _libc="glibc"
   _compiler="gcc"
   _libcompiler="libgcc"
+  if [[ "${_arch}" == "i686" || \
+        "${_arch}" == "pentium4" ]]; then
+    _disable_year38="true"   
+  fi
 elif [[ "${_os}" == "Msys" ]]; then
   _libc="msys2-w32api-runtime"
   _libc_headers="msys2-w32api-headers"
@@ -165,7 +178,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=70
+pkgrel=72
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -431,17 +444,23 @@ build() {
   )
   cd \
     "${_tarname}"
+  if [[ "${_disable_year2038}" == "true" ]]; then
+    _configure_opts+=(
+      --disable-year2038
+    )
+  fi
   if [[ "${_os}" == "Msys" ]]; then
-    if [[ "$CARCH" == "i686" ]]; then
-      _configure_opts+=(
-        --disable-year2038
-      )
-    fi
     _configure_opts+=(
       DEFAULT_ARG_SIZE="(32u*1024)"
-      --disable-year2038
       --without-libiconv-prefix
       --without-libintl-prefix
+    )
+  fi
+  if [[ "${_os}" == "Android" ]]; then
+    _configure_opts+=(
+      gl_cv_func_fflush_stdin="no"
+      SORT_SUPPORTS_Z="yes"
+      SORT="$TERMUX_PREFIX/bin/sort"
     )
   fi
   # Don't build or install locate because we use mlocate,
