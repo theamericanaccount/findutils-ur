@@ -159,7 +159,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=52
+pkgrel=53
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -349,8 +349,9 @@ prepare() {
       fi
       if [[ -d "${_gnulib_srcdir_path}" ]]; then
         mv \
-	  -v \
+          -v \
           "${_gnulib_clone_path}/"* \
+          "${_gnulib_clone_path}/."* \
           "${_gnulib_srcdir_path}"
       elif [[ ! -d "${_gnulib_srcdir_path}" ]]; then
         mv \
