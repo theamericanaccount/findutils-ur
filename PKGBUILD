@@ -39,7 +39,7 @@
 # of the difficulties one can
 # face writing an universal recipe
 # for a complex C program:
-# - some platforms build only
+# - some platforms build easily only
 #   when coming from a certain source
 #   and when provided in a certain
 #   form (release tarballs work on
@@ -632,7 +632,7 @@ build() {
         "./Makefile"* \
         "./"*"/Makefile"* \
         "./"*"/"*"/Makefile"*; do
-	_msg=(
+        _msg=(
           "Fixing 'SHELL' variable"
           "in Makefile '${PWD}/${_makefile}'".
         )
