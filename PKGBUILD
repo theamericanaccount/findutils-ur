@@ -165,7 +165,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=68
+pkgrel=69
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -339,6 +339,22 @@ _android_fix_shebang() {
     "${_file}"
 }
 
+_prepare_android() {
+  local \
+    _os
+  _os="$(
+    uname \
+      -o)"
+  if [[ "${_os}" == "Android" ]]; then
+    _android_fix_shebang \
+      "${PWD}/bootstrap"
+    _android_fix_shebang \
+      "${_gnulib_srcdir_path}/gnulib-tool"
+    _android_fix_shebang \
+      "${_gnulib_srcdir_path}/gnulib-tool.py"
+  fi
+}
+
 prepare() {
   local \
     _bootstrap_opts=() \
@@ -362,6 +378,12 @@ prepare() {
         "protocol.file.allow=always" \
       submodule \
         update
+    _prepare_android
+    export \
+      GNULIB_SRCDIR="${_gnulib_srcdir_path}"; \
+    GNULIB_SRCDIR="${_gnulib_srcdir_path}" \
+    "${PWD}/bootstrap" \
+      "${_bootstrap_opts[@]}"
   elif [[ "${_git}" == "false" ]]; then
     if [[ "${_release}" == "false" ]]; then
       if [[ -e ".gitmodules" ]]; then
@@ -388,19 +410,7 @@ prepare() {
       _bootstrap_opts+=(
         --no-git
       )
-      _os="$(
-        uname \
-          -o)"
-      if [[ "${_os}" == "Android" ]]; then
-        _android_fix_shebang \
-          "${PWD}/bootstrap"
-        _android_fix_shebang \
-          "${_gnulib_srcdir_path}/gnulib-tool"
-        _android_fix_shebang \
-          "${_gnulib_srcdir_path}/gnulib-tool.py"
-        # termux-fix-shebang \
-        #   "/data/data/com.termux/files/usr/bin/fur";
-      fi
+      _prepare_android
       export \
         GNULIB_SRCDIR="${_gnulib_srcdir_path}"; \
       GNULIB_SRCDIR="${_gnulib_srcdir_path}" \
