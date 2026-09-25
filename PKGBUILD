@@ -254,6 +254,7 @@ if [[ "${_ns}" == "gnu" ]]; then
 fi
 if [[ "${_git_service}" == "gnu" ]]; then
   if [[ "${_git}" == "true" ]]; then
+    _sum="SKIP"
     _url="${_http}/${_pkg}.git"
     _gnulib_uri="${_http}/gnulib.git"
     _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
@@ -282,6 +283,7 @@ elif [[ "${_git_service}" == "github" ]]; then
     _src="${_tarfile}::${_uri}"
     _gnulib_src="${_gnulib_tarfile}::${_gnulib_uri}"
   elif [[ "${_git}" == "true" ]]; then
+    _sum="SKIP"
     _gnulib_uri="${_http}/${_ns}/gnulib.git"
     _src="${_tarfile}::git+${_url}?signed#${_tag_name}=${_tag}"
     _gnulib_src="${_gnulib_tarfile}::git+${_gnulib_uri}"
@@ -297,17 +299,24 @@ validpgpkeys=(
   # James Youngman
   #   <james@youngman.org>
   '0CF4E8D871593224842832B888DD9E08C5DDACB9'
+  # Truocolo
+  #   <truocolo@aol.com>
+  '97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9'
+  #   <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+  'F690CBC17BD1F53557290AF51FC17D540D0ADEED'
+  # Pellegrino Prevete (dvorak)
+  #   <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+  '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
 )
 if [[ "${_git}" == "true" ]]; then
   b2sums=(
     '234e55a7eb5d9b882e45f9fb40446f765741130e4c3ebd01154344e48f0d3bcb6b36442d1c99c3574df239511959d542ec9b201fe269a1fd7b527edd058c54d5'
     'SKIP'
   )
-elif [[ "${_git}" == "false" ]]; then
-  sha256sums=(
-    "${_sum}"
-  )
 fi
+sha256sums=(
+  "${_sum}"
+)
 if [[ "${_release}" == "false" ]]; then
   source+=(
     "${_gnulib_src}"
