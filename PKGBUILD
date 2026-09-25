@@ -96,7 +96,8 @@ if [[ ! -v "_git" ]]; then
   # release.
 fi
 _git="true"
-if [[ "${_os}" == "Msys" ]]; then
+if [[ "${_os}" == "Msys" || \
+      "${_os}" == "Android" ]]; then
   _git="false"
 fi
 
@@ -110,13 +111,15 @@ if [[ ! -v "_ns" ]]; then
   elif [[ "${_git}" == "false" ]]; then
     _ns="themartiancompany"
   fi
-  if [[ "${_os}" == "Msys" ]]; then
+  if [[ "${_os}" == "Msys" || \
+        "${_os}" == "Android" ]]; then
     _ns="gnu"
   fi
 fi
 if [[ ! -v "_release" ]]; then
   _release="false"
-  if [[ "${_os}" == "Msys" ]]; then
+  if [[ "${_os}" == "Msys" || \
+        "${_os}" == "Android" ]]; then
     _release="true"
   fi
 fi
@@ -127,7 +130,8 @@ if [[ ! -v "_git_service" ]]; then
     _git_service="github"
   fi
 fi
-if [[ "${_os}" == "Msys" ]]; then
+if [[ "${_os}" == "Msys" || \
+      "${_os}" == "Android" ]]; then
   _git_service="gnu"
 fi
 if [[ ! -v "_tag_name" ]]; then
@@ -164,7 +168,8 @@ if [[ ! -v "_archive_format" ]]; then
 fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
-  if [[ "${_os}" == "Msys" ]]; then
+  if [[ "${_os}" == "Msys" || \
+        "${_os}" == "Android" ]]; then
     _docs="false"
   fi
 fi
@@ -178,7 +183,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=72
+pkgrel=73
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -202,6 +207,11 @@ depends=(
   "${_libc}"
   "${_libcompiler}"
 )
+if [[ "${_os}" == "Android" ]]; then
+  depends+=(
+    "libandroid-support"
+  )
+fi
 makedepends=(
   "automake"
   "${_compiler}"
