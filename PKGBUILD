@@ -90,6 +90,10 @@ fi
 if [[ ! -v "_ns" ]]; then
   if [[ "${_git}" == "true" ]]; then
     _ns="gnu"
+    if [[ "${_os}" == "GNU/Linux" || \
+          "${_os}" == "Android" ]]; then
+      _ns="themartiancompany"
+    fi
   elif [[ "${_git}" == "false" ]]; then
     _ns="themartiancompany"
   fi
