@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=107
+pkgrel=108
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -416,7 +416,10 @@ prepare() {
     _bootstrap_opts=() \
     _gnulib_clone_path \
     _gnulib_srcdir_path \
-    _os
+    _os \
+    _usr
+  _usr="$(
+    _usr_get)"
   _gnulib_clone_path="${srcdir}/${_gnulib_tarname}"
   _gnulib_srcdir_path="${srcdir}/${_tarname}/gnulib"
   cd \
@@ -437,6 +440,8 @@ prepare() {
     _prepare_android
     export \
       GNULIB_SRCDIR="${_gnulib_srcdir_path}"; \
+      SHELL="${_usr}/bin/bash"
+    SHELL="${_usr}/bin/bash" \
     GNULIB_SRCDIR="${_gnulib_srcdir_path}" \
     "${PWD}/bootstrap" \
       "${_bootstrap_opts[@]}"
@@ -469,6 +474,8 @@ prepare() {
       _prepare_android
       export \
         GNULIB_SRCDIR="${_gnulib_srcdir_path}"; \
+        SHELL="${_usr}/bin/bash"
+      SHELL="${_usr}/bin/bash" \
       GNULIB_SRCDIR="${_gnulib_srcdir_path}" \
       "${PWD}/bootstrap" \
         "${_bootstrap_opts[@]}"
@@ -530,6 +537,7 @@ build() {
       gl_cv_func_fflush_stdin="no"
       SORT_SUPPORTS_Z="yes"
       SORT="${_usr}/bin/sort"
+      SHELL="${_usr}/bin/bash"
     )
   fi
   # Don't build or install locate because we use mlocate,
@@ -565,6 +573,7 @@ build() {
       -i \
       "${PWD}/configure"
   fi
+  SHELL="${_usr}/bin/bash" \
   "${PWD}/configure" \
     "${_configure_opts[@]}"
   # Arch Linux doesn't build locate,
@@ -581,6 +590,7 @@ build() {
         "locate" \
       dblocation.texi
   fi
+  SHELL="${_usr}/bin/bash" \
   CPPFLAGS="${_cppflags[*]}" \
   make
 }
