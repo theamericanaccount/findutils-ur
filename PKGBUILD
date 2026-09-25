@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=88
+pkgrel=89
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -209,6 +209,12 @@ depends=(
   "${_libc}"
   "${_libcompiler}"
 )
+if [[ "${_os}" == "Msys" ]]; then
+  depends+=(
+    'libiconv'
+    'libintl'
+  )
+fi
 if [[ "${_os}" == "Android" ]]; then
   depends+=(
     "libandroid-support"
@@ -223,6 +229,14 @@ makedepends=(
   "${_py}"
   "wget"
 )
+if [[ "${_os}" == "Msys" ]]; then
+  makedepends+=(
+    'autotools'
+    'gettext-devel'
+    'libiconv-devel'
+  )
+fi
+makedepends=('libiconv-devel' 'gettext-devel' 'autotools' 'gcc')
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
     "texinfo"
