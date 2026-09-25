@@ -35,6 +35,25 @@
 #   Tobias Powalowski
 #     <tpowa@archlinux.org>
 
+# This package contains almost all
+# of the difficulties one can
+# face writing an universal recipe
+# for a complex C program:
+# - some platforms build only
+#   when coming from a certain source
+#   and when provided in a certain
+#   form (release tarballs work on
+#   Windows and Android because no
+#   configure files generation is needed).
+# - on Android some Makefiles which can't be easily
+#   auto-generated need 'SHELL' variable
+#   fixed an 'prepare' time.
+# - Windows build is in a MSYS2 environment
+# - Switches dependent
+#   architecture type (risc, cisc) and cpu
+#   instructions size (32-bit, 64-bit)
+#   are needed to correctly build the package.
+
 _os="$(
   uname \
     -o)"
@@ -47,7 +66,7 @@ if [[ "${_os}" == "Android" ]]; then
   _compiler="clang"
   _libcompiler="llvm-libs"
   if [[ "${_arch}" == "armv8l" || \
-	"${_arch}" == "armv7l" || \
+        "${_arch}" == "armv7l" || \
         "${_arch}" == "arm" || \
         "${_arch}" == "i686" ]]; then
     _disable_year2038="true"   
@@ -92,9 +111,6 @@ if [[ ! -v "_evmfs" ]]; then
 fi
 if [[ ! -v "_git" ]]; then
   _git="true"
-  # On Windows it builds
-  # only from GNU tarball
-  # release.
 fi
 if [[ "${_os}" == "GNU/Linux" ]]; then
   _git="true"
@@ -185,7 +201,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=110
+pkgrel=112
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -613,8 +629,8 @@ build() {
       done
     else
       for _makefile in \
-        "./Makefile"*
-        "./"*"/Makefile"*
+        "./Makefile"* \
+        "./"*"/Makefile"* \
         "./"*"/"*"/Makefile"*; do
 	_msg=(
           "Fixing 'SHELL' variable"
