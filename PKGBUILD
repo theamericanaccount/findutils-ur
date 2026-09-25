@@ -185,7 +185,7 @@ pkgname=(
 pkgver=4.11.0
 _commit="66fc81d477f9e0e3dadeb80800c967d901f43ca7"
 _gnulib_commit="a575239e473656fd0c055a228963bdb48bd0c2cb"
-pkgrel=94
+pkgrel=95
 _pkgdesc=(
   "GNU utilities to locate files"
 )
@@ -562,7 +562,7 @@ build() {
     # _android_fix_shebang \
     #   "${PWD}/configure"
     sed \
-      "%s/bin/sh%/${_usr}/bin/sh/g" \
+      "s%/bin/sh%/${_usr}/bin/sh/g" \
       -i \
       "${PWD}/configure"
   fi
